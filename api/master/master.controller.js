@@ -1,4 +1,4 @@
-const { create, getMasterById, getMasters, updateMaster, deleteMaster, getMasterToken } = require('./master.service');
+const { create, getMasterById, getMasters, updateMaster, deleteMaster, getMasterToken, inserToken } = require('./master.service');
 const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 
@@ -115,8 +115,9 @@ module.exports = {
                 results.password = undefined;
                 const jsontoken = sign({result: results}, process.env.TOKEN_KEY, {
                     expiresIn: "1h"
-                })
-                return res.json({
+                });
+                inserToken({id: results.id, access_token: jsontoken}, () => {});
+                return res.status(200).json({
                     sucess: 'Sucesso!',
                     message: "Sucesso!",
                     access_token: jsontoken

@@ -33,8 +33,8 @@ module.exports = {
     },
     updateMaster: (data, callBack) => {
         pool.query(
-            `update master set login=?, password=?, where id=?`,
-            [ data.login, data.password, data.id ],
+            `update master set login=?, password=?, access_token=?, where id=?`,
+            [ data.login, data.password, data.access_token, data.id ],
             (error, results, fields) => {
                 if(error){ callBack(error); }
                 return callBack(null, results)
@@ -63,5 +63,15 @@ module.exports = {
                 return callBack(null, results[0])
             }
         )
-    }
+    },
+    inserToken: (data, callBack) => {
+        pool.query(
+            `UPDATE master SET access_token=? WHERE id=?`,
+            [ data.access_token, data.id ],
+            (error, results, fields) => {
+                if(error){ callBack(error); }
+                return callBack(null, results)
+            }
+        )
+    },
 };
