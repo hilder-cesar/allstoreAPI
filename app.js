@@ -12,7 +12,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use("/api/master", masterRouter);
+app.use("/api/MasterUser", masterRouter);
 
 app.listen(process.env.APP_PORT, () => {
     console.log('Working', process.env.APP_PORT);

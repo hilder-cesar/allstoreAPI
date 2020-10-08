@@ -3,8 +3,8 @@ const pool = require('../../config/database');
 module.exports = {
     create: (data, callBack) => {
         pool.query(
-            `insert into master(login, password) values(?, ?)`,
-            [ data.login, data.password ],
+            `insert into master(name, email, login, password) values(?, ?, ?, ?)`,
+            [ data.name, data.email, data.login, data.password ],
             (error, results, fields) => {
                 if(error){ return callBack(error) }
                 return callBack(null, results)
@@ -74,4 +74,14 @@ module.exports = {
             }
         )
     },
+    getInfo: (data, callBack) => {
+        pool.query(
+            `SELECT * FROM master WHERE access_token=?`,
+            [ data ],
+            (error, results, fields) => {
+                if(error){ callBack(error); }
+                return callBack(null, results[0])
+            }
+        )
+    }
 };

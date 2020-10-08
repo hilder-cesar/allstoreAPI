@@ -1,4 +1,4 @@
-const { create, getMasterById, getMasters, updateMaster, deleteMaster, getMasterToken, inserToken } = require('./master.service');
+const { create, getMasterById, getMasters, updateMaster, deleteMaster, getMasterToken, inserToken, getInfo } = require('./master.service');
 const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 
@@ -91,7 +91,7 @@ module.exports = {
                    message: "Nenhum registro encontrado"
                })
            }
-           return res.json({
+           return res.status(200).json({
                sucess: "Sucesso",
                message: "Usuário excluído"
            })
@@ -129,6 +129,24 @@ module.exports = {
                     data: []
                 })
             }
+        })
+    },
+    getInfo: (req, res) => {
+        let token = req.get("authorization");
+        token = token.slice(7)
+        getInfo(token, (err, results) => {
+            if(err){ 
+                return res.status(400).json({
+                    sucess: "Erro",
+                    message: "Usuário não encontrado",
+                    data: err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Sucesso",
+                message: "Usuário encontrado!",
+                data: results
+            });
         })
     }
 }
