@@ -104,7 +104,7 @@ module.exports = {
             if(result){
                 results.password = undefined;
                 const jsontoken = sign({id: results.id, password: results.password}, process.env.TOKEN_KEY, {
-                    expiresIn: "1h"
+                    expiresIn: "4h"
                 });
                 inserToken({id: results.id, access_token: jsontoken}, () => {});
                 return res.status(200).json({
