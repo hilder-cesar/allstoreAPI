@@ -11,6 +11,16 @@ module.exports = {
             }
         )
     },
+    updateMaster: (data, callBack) => {
+        pool.query(
+            `update master set name=?, email=?, login=?, password=? where id=?`,
+            [ data.name, data.email, data.login, data.password, data.id ],
+            (error, results, fields) => {
+                if(error){ callBack(error); }
+                return callBack(null, results)
+            }
+        )
+    },
     getMasters: callBack => {
         pool.query(
             `select id, login, password from master`,
@@ -23,21 +33,11 @@ module.exports = {
     },
     getMasterById: (id, callBack) => {
         pool.query(
-            `SELECT id, login, password FROM master WHERE id=?`,
-            [id],
+            `SELECT * FROM master WHERE id=?`,
+            [ id ],
             (error, results, fields) => {
                 if(error){ return callBack(error) }
                 return callBack(null, results);
-            }
-        )
-    },
-    updateMaster: (data, callBack) => {
-        pool.query(
-            `update master set login=?, password=?, access_token=?, where id=?`,
-            [ data.login, data.password, data.access_token, data.id ],
-            (error, results, fields) => {
-                if(error){ callBack(error); }
-                return callBack(null, results)
             }
         )
     },
@@ -81,6 +81,15 @@ module.exports = {
             (error, results, fields) => {
                 if(error){ callBack(error); }
                 return callBack(null, results[0])
+            }
+        )
+    },
+    loadData: (callBack) => {
+        pool.query(
+            `SELECT * FROM master`,
+            (err, results) => {
+                if(err){ callBack(err); }
+                return callBack(null, results)
             }
         )
     }
